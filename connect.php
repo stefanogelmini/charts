@@ -1,9 +1,9 @@
 <?php
 # FileName="connect.php"
-$hostname = "localhost";
+$hostname = "127.0.0.1";
 $database = "TRENDS";
-$username = "phpmyadmin";
-$password = "8vBJnje06qQZ";
+$username = "stefanogelmini";
+$password = "";
 
 #Connect to the database
 	//connection String
