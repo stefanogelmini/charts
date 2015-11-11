@@ -232,6 +232,7 @@
 	<?php include('menu.php'); ?>
 	 <div style="font-size: 12px; font-family: Verdana;" id="labelLocazione">Scegli una locazione</div>
 	 <div id='jqxCombo'></div>
+	 
 	 <div id="landing-container">       
 		<div id='chartContainer1' style="width:800px; height:500px;float: left;"></div>
 		<div id='chartContainer2' style="width:800px; height:500px;float: right;"></div>
