@@ -2,7 +2,7 @@
 # FileName="connect.php"
 $hostname = "127.0.0.1";
 $database = "TRENDS";
-$username = "8vBJnje06qQZ";
+$username = "stefanogelmini";
 $password = "";
 
 #Connect to the database

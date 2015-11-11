@@ -206,7 +206,8 @@
 
                 // Create a jqxComboBox
                 $("#jqxCombo").jqxComboBox({ source: dataAdapter, displayMember: "Locazione", valueMember: "IDLocazione", width: 400, height: 20 });
-                 $("#jqxCombo").jqxComboBox('selectedIndex', idlocazione);
+                $("#jqxCombo").val(idlocazione);
+              //  $("#jqxCombo").jqxComboBox('selectedIndex', idlocazione);
                 // trigger the select event.
                 $("#jqxCombo").on('select', function (event) {
                     if (event.args) {
