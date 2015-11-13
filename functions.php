@@ -1,8 +1,13 @@
 <?php
+
+$IS_ESTATE = false;
+
 /*
 DEFAULT: $_GET['page'];
 SMART: GET('page'); // return value or false if is null or bad input
 */
+
+
 function GET($name=NULL, $value=false, $option="default")
 {
     $option=false; // Old version depricated part

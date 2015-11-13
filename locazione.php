@@ -16,16 +16,28 @@
 					{ name: 'MinSogliaEstate_Temperatura', type: 'number'},
 					{ name: 'MaxSogliaEstate_Temperatura', type: 'number'},
 					{ name: 'MinSogliaEstate_Umidita', type: 'number'},
-                                        { name: 'MaxSogliaEstate_Umidita', type: 'number'}
+                    { name: 'MaxSogliaEstate_Umidita', type: 'number'}
 					
                 ],
                url: 'dataSondaLocazione.php?IDLocazione='+idlocazione
             };
-			
+			var sourceFuoriSogliaMax =
+            {
+                datatype: "json",
+                datafields: [
+					{ name: 'TimeStamp', type: 'date'},
+					{ name: 'IDSonda', type: 'integer' },
+					{ name: 'IDTipoSonda', type: 'number' },
+					{ name: 'DescrizioneTipoSonda', type: 'string'},
+				    { name: 'Soglia', type: 'string'},
+				    { name: 'VALORE_D', type: 'number'}
+                ],
+               url: 'dataSondaLocazioneOverSoglia.php?IDLocazione='+idlocazione
+            };	
 		
 		$(document).ready(function () {
 	            var dataAdapter = new $.jqx.dataAdapter(source, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('Error loading "' + source.url + '" : ' + error); } });
-        	    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        	    var months = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Sep', 'Ott', 'Nov', 'Dic'];
 
             // prepare jqxChart1 settings
 	            var settings1 = {
@@ -74,7 +86,7 @@
                     minValue: 'auto',
                     maxValue: 'auto',
                     labels: {horizontalAlignment: 'right'},
-		    axisSize: 'auto',
+		            axisSize: 'auto',
                     title: { text: '' }
                 },
                 colorScheme: 'scheme01',
@@ -83,14 +95,27 @@
                         {
                             type: 'spline',
                             series: [
-								{ dataField: 'Temperatura', displayText: 'Temperatura' , lineWidth: 4, dashStyle: '1'}
+								{ dataField: 'Temperatura', displayText: 'Temperatura' , lineWidth: 4, dashStyle: '1',
+								    
+								    // Modify this function to return desired colors.
+                                    // jqxChart will call the function for each data point.
+                                    // Sequential points that have the same color will be
+                                    // grouped automatically in a line segment
+                                    colorFunction: function (value, itemIndex, serie, group) {
+                                        if (isNaN(itemIndex))
+                                                    return '#00FF00';
+                                      //source[itemIndex][MaxSogliaEstate_Temperatura]
+                                       return (value > 25) ? '#CC1133' : '#55CC55';
+                                               // }   
+                                    }
+								}
                                 ]
                         },
 			{
                             type: 'spline',
                             series: [
-                                    { dataField: 'MinSogliaEstate_Temperatura', displayText: 'Min Soglia Estate Temperatura', opacity: 1.0, lineWidth: 4, dashStyle: '1' },
-                                    { dataField: 'MaxSogliaEstate_Temperatura', displayText: 'Max Soglia Estate Temperatura', opacity: 1.0, lineWidth: 4, dashStyle: '1' }
+                                    { dataField: 'MinSogliaEstate_Temperatura', displayText: 'Min Soglia Temperatura', opacity: 1.0, lineWidth: 4, dashStyle: '1' },
+                                    { dataField: 'MaxSogliaEstate_Temperatura', displayText: 'Max Soglia Temperatura', opacity: 1.0, lineWidth: 4, dashStyle: '1' }
                                 ]
                         }
                     ]
@@ -152,7 +177,7 @@
                         {
                             type: 'spline',
                             series: [
-                                                                { dataField: 'Umidita', displayText: 'Umidita', lineWidth: 4, dashStyle: '1' }
+                                 { dataField: 'Umidita', displayText: 'Umidità', lineWidth: 4, dashStyle: '1' }
                                 ]
                         },
                         {
@@ -177,16 +202,18 @@
                 	});
 		
 		$("#jqxgrid").jqxGrid({
-		        source: source,
+		        source: sourceFuoriSogliaMax,
 		        theme: 'classic',
 		        columns:[
-					{ text: 'Data e ora', datafield: 'TimeStamp', width: 250 },
-					{ text: 'Temperatura', datafield: 'Temperatura', width: 150 },
-					{ text: 'Umidita', datafield: 'Umidita', width: 150 }
-				]
-			    });
-
-        });
+					{ text: 'Data e ora', datafield: 'TimeStamp', width: 220 },
+					{ text: 'Valore', datafield: 'VALORE_D', width: 150 },
+					{ text: 'TipoSonda', datafield: 'DescrizioneTipoSonda', width: 100 },
+					{ text: 'Soglia', datafield: 'Soglia', width: 50 }
+				],
+                groupable: true,
+                groups: ['DescrizioneTipoSonda']
+                });
+            });
 		
 		
 		$(document).ready(function () {               
@@ -231,13 +258,15 @@
 <body class='default'>
 	<?php include('menu.php'); ?>
 	 <div style="font-size: 12px; font-family: Verdana;" id="labelLocazione">Scegli una locazione</div>
-	 <div id='jqxCombo' class="jqx-combobox-icon"></div>
+	 <div id='jqxCombo'></div>
 	 
 	 <div id="landing-container">       
 		<div id='chartContainer1' style="width:800px; height:500px;float: left; "></div>
 		<div id='chartContainer2' style="width:800px; height:500px;float: left;"></div>
 	 </div>
- 	 <div id="jqxgrid"></div>	
+	 
+ 	 <div id="jqxgrid"></div>
+ 	 
 </body>
 </html>
 
