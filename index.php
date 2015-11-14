@@ -10,13 +10,14 @@
 	
 	//print all rows order by title
 
-	$arr = DAOFactory::getLocazioneDAO()->queryAllOrderBy('IDLocazione');
-	$conta = count($arr);
-	echo ("Sono state individuate ". $conta ." sonde.");
-	for($i=0;$i<$conta;$i++){
-		$row = $arr[$i];
-		echo $row->IDLocazione;
-	}
+	$arr = DAOFactory::getLocazioneDAO()->queryAllOrderBy('Locazione');
+ 	$conta = count($arr);
+	echo ("Sono state individuate ". $conta ." locazioni. In totale ci sono ". DAOFactory::getValoriSondaDAO()->getCountRows() . " valori." );
+	// for($i=0;$i<$conta;$i++){
+	// 	$row = $arr[$i];
+	// 	echo $row;
+	// }
+
 
 
 ?>
